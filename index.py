@@ -8,7 +8,7 @@ from KnowledgeBase import KnowledgeBase
 
 def remove_random_edges(G, num_edges_to_remove: int):
     edges = list(G.edges())
-    if (len(edges) < num_edges_to_remove):
+    if len(edges) < num_edges_to_remove:
         num_edges_to_remove = len(edges)
     removed_edges = 0
 
@@ -41,32 +41,44 @@ def generate_graph(num_vertices=25, num_edges_to_remove=0):
     return G
 
 
-graph = generate_graph(25, 12)
-# graph = nx.Graph()
-# graph.add_edge((0, 3), (0, 2))
-# graph.add_edge((0, 2), (0, 1))
-# graph.add_edge((0, 1), (0, 0))
-# graph.add_edge((0, 0), (1, 0))
-# graph.add_edge((1, 0), (2, 0))
-# graph.add_edge((2, 0), (2, 1))
-# graph.add_edge((2, 1), (2, 2))
-# graph.add_edge((2, 2), (2, 3))
-# graph.add_edge((0, 2), (1, 2))
-# graph.add_edge((1, 2), (1, 3))
+graph = generate_graph(49, 35)
 start = (0, 1)
-target = (2, 3)
+target = (5, 5)
 kb = KnowledgeBase(start, target)
 agent = CarAgent(graph, kb)
+
 pos = dict((n, n) for n in graph.nodes())
+
+default_color = "white"
+
 node_colors = [
-    "red" if node == start else "blue" if node == target else "none"
+    "red" if node == start else "blue" if node == target else default_color
     for node in graph.nodes()
 ]
-nx.draw(graph, pos, with_labels=True,
-        linewidths=1, node_color=node_colors, font_size=15)
+
+plt.ion()
+fig, ax = plt.subplots()
+nx.draw(graph, pos, node_color=node_colors,
+        edgecolors="black", linewidths=1, font_size=15)
 
 try:
     agent.run()
 except IndexError:
     print("IndexError")
+
+visited = kb.visited
+for i, node in enumerate(visited):
+    node_colors = [
+        "green" if n in visited[:i +
+                                1] else "red" if n == start else "blue" if n == target else default_color
+        for n in graph.nodes()
+    ]
+
+    ax.clear()
+    nx.draw(graph, pos, node_color=node_colors,
+            edgecolors="black", linewidths=1, font_size=15)
+
+    plt.pause(1)
+
+plt.ioff()
 plt.show()

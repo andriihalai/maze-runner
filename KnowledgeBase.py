@@ -44,7 +44,6 @@ class KnowledgeBase:
 
     def get_next_node(self):
         node = self.getClosestNode()
-        # print("Closest: ", node)
         path = nx.shortest_path(self.G, self.current_node, node)
         return path[1]
 

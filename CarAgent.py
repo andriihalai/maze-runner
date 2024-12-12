@@ -15,12 +15,9 @@ class CarAgent:
         neighbors = self.G.neighbors(self.current_node)
         for n in neighbors:
             eds = list(self.G.edges(n))
-            # print(n, "edges: ", eds)
 
             self.kb.addEdges(eds)
             if len(eds) == 1:
-                # print("Deadlock! Current node: ", self.current_node,
-                #       "n: ", n, "eds: ", eds)
                 self.kb.deadlock.add(n)
 
     def run(self):
@@ -35,7 +32,6 @@ class CarAgent:
         print("Destination reached")
 
     def test(self):
-        # print(self.current_node)
         self.investigateGraph()
         print(self.kb.G.edges())
         print(self.kb.G.nodes)
