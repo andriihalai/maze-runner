@@ -69,8 +69,8 @@ except IndexError:
 visited = kb.visited
 for i, node in enumerate(visited):
     node_colors = [
-        "green" if n in visited[:i +
-                                1] else "red" if n == start else "blue" if n == target else default_color
+        "green" if n in visited[:i + 1]
+        else "red" if n == start else "blue" if n == target else default_color
         for n in graph.nodes()
     ]
 
